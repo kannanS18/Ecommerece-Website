@@ -1,0 +1,364 @@
+/* SweetWave Bakery Color Palette */
+:root {
+  --cream: #FAECD9;
+  --pink: #F7AEB3;
+  --brown: #5C4033;
+  --dark-brown: #2A1E1A;
+  --golden-beige: #F0C378;
+  --sprinkle-blue: #4C9AFF;
+  --sprinkle-green: #5BE39D;
+  --sprinkle-purple: #B87DE6;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+footer {
+  width: 100vw;
+  height: 250px;
+  z-index: 1;
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
+
+footer div {
+  background-color: var(--pink);
+  margin: -5px 0 0 0;
+  padding: 0;
+  color: var(--dark-brown);
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+
+footer svg {
+  width: 100%;
+}
+
+.arrow {
+  stroke-width: 0.3px;
+  stroke: var(--golden-beige);
+}
+
+.wave {
+  animation: wave 3s linear infinite;
+  fill: var(--pink);
+}
+
+.drop {
+  fill: transparent;
+  animation: drop 5s ease infinite;
+  stroke: var(--sprinkle-blue);
+  stroke-width: 0.5;
+  opacity: 0.6;
+  transform: translateY(80%);
+}
+
+.drop1 {
+  stroke: var(--sprinkle-blue);
+  transform-origin: 20px 3px;
+}
+.drop2 {
+  stroke: var(--sprinkle-green);
+  animation-delay: 3s;
+  animation-duration: 3s;
+  transform-origin: 25px 3px;
+}
+.drop3 {
+  stroke: var(--sprinkle-purple);
+  animation-delay: -2s;
+  animation-duration: 3.4s;
+  transform-origin: 16px 3px;
+}
+
+.gooeff {
+  filter: url(#goo);
+}
+
+#wave2 {
+  animation-duration: 5s;
+  animation-direction: reverse;
+  opacity: 0.6;
+}
+
+#wave3 {
+  animation-duration: 7s;
+  opacity: 0.3;
+}
+
+.footer-link {
+  color: var(--cream);
+  text-decoration: none;
+  font-weight: 500;
+  transition: text-decoration 0.2s;
+}
+.footer-link:hover {
+  text-decoration: underline;
+  color: var(--sprinkle-purple);
+}
+.footer-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  vertical-align: middle;
+  background: var(--cream);
+  border-radius: 50%;
+  border: 2px solid var(--pink);
+  box-shadow: 0 2px 8px var(--golden-beige);
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(80%);
+    opacity: 0.6;
+  }
+  80% {
+    transform: translateY(80%);
+    opacity: 0.6;
+  }
+  90% {
+    transform: translateY(10%);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0%) scale(1.5);
+    stroke-width: 0.2;
+    opacity: 0;
+  }
+}
+
+@keyframes wave {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes ball {
+  to {
+    transform: translateY(20%);
+  }
+}
+
+.bakery-footer-main {
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  padding: 32px 16px 16px 16px;
+  position: relative;
+  z-index: 1;
+  background: var(--pink);
+  margin-bottom: 5px;
+  box-sizing: border-box;
+}
+
+.bakery-footer-about {
+  flex: 1 1 220px;
+  min-width: 220px;
+  text-align: left;
+  margin: 0 12px;
+}
+
+.footer-logo-img {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  vertical-align: middle;
+  background: var(--pink);
+  border-radius: 50%;
+  border: 2px solid var(--pink);
+  box-shadow: 0 2px 8px var(--golden-beige);
+  margin-bottom: 12px;
+}
+
+.bakery-footer-description {
+  color: var(--brown);
+  font-size: 1.08rem;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.bakery-footer-socials {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+.bakery-footer-socials a {
+  color: var(--sprinkle-blue);
+  font-size: 1.5em;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.bakery-footer-socials a:hover {
+  color: var(--sprinkle-purple);
+}
+
+/* Category Links */
+.bakery-footer-links {
+  flex: 1 1 180px;
+  min-width: 180px;
+  text-align: left;
+  margin: 0 12px;
+}
+.bakery-footer-links h2 {
+  color: var(--dark-brown);
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.bakery-footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bakery-footer-links li {
+  margin-bottom: 8px;
+  font-size: 1.05em;
+}
+.bakery-footer-links a {
+  color: var(--brown);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.bakery-footer-links a:hover {
+  color: var(--sprinkle-purple);
+  text-decoration: underline;
+}
+
+/* Contact Info */
+.bakery-footer-contactus {
+  flex: 1 1 180px;
+  min-width: 180px;
+  text-align: left;
+  margin: 0 12px;
+}
+.bakery-footer-contactus h2 {
+  color: var(--dark-brown);
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.bakery-footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bakery-footer-contact-list li {
+  margin-bottom: 8px;
+  font-size: 1.05em;
+  margin-left: -12px;
+}
+.bakery-footer-contact-list a {
+  color: var(--dark-brown);
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 6px;
+  transition: color 0.2s;
+  text-align: left;
+  position: relative;
+}
+.bakery-footer-contact-list a:hover {
+  color: var(--sprinkle-purple);
+  text-decoration: underline;
+}
+.bakery-footer-contact-list svg {
+  color: var(--sprinkle-blue);
+  margin-right: 8px;
+  position: relative; 
+  top: 17px;
+  right: 180px;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+/* Footer Bottom Bar */
+.bakery-footer-bottom {
+  color: var(--dark-brown);
+  text-align: center;
+  font-size: 1.08em;
+  font-weight: 500;
+  padding: 12px 0 8px 0;
+  border-radius: 0;
+  margin-top: 0;
+  background: var(--pink);
+  box-shadow: none;
+  z-index: 2;
+  position: relative;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  footer {
+    height: auto;
+    min-height: 200px;
+  }
+  
+  .bakery-footer-main {
+    flex-direction: column;
+    align-items: self-start;
+    gap: 24px;
+    padding: 24px 16px 8px 16px;
+  }
+  
+  .bakery-footer-about,
+  .bakery-footer-links,
+  .bakery-footer-contactus {
+    margin: 0;
+    text-align: left;
+    padding-left: 15px;
+    
+  }
+  .bakery-footer-contact-list{
+    padding-left: 30px;
+  }
+  
+  .bakery-footer-contact-list svg {
+    position: relative;
+    margin-right: 8px;
+    top: 17px;
+    right: 130px;
+  }
+  
+  .bakery-footer-links a::before {
+    content: "> ";
+    color: var(--sprinkle-blue);
+    font-weight: bold;
+  }
+
+}
+
+@media (max-width: 600px) {
+  footer {
+    height: auto;
+    min-height: 180px;
+  }
+  
+  .bakery-footer-main {
+    gap: 16px;
+    padding: 16px 12px 8px 12px;
+  }
+  
+  .bakery-footer-description {
+    font-size: 1rem;
+  }
+  
+  .bakery-footer-links h2,
+  .bakery-footer-contactus h2 {
+    font-size: 1.1em;
+  }
+  
+  .bakery-footer-links li,
+  .bakery-footer-contact-list li {
+    font-size: 1rem;
+  }
+  
+  .bakery-footer-socials {
+    justify-content: flex-start;
+  }
+}

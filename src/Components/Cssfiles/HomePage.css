@@ -1,0 +1,375 @@
+body{
+  background-color: #FAECD9 ;
+}
+
+.homepage-combo-row {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 30px;
+  gap: 42px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 30px;
+  cursor: grab;
+  scroll-behavior: smooth;
+  user-select: none;
+
+}
+
+.video-background {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+    position: relative;
+
+}
+
+.video-background video {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    z-index: 2;
+}
+
+.overlay h1 {
+    color: white;
+    font-size: 5rem;
+    margin-top: 250px;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    font-weight: 900;
+    text-shadow: 0 2px 16px #e11d48cc;
+}
+
+.overlay p {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 80px;
+    font-weight: 500;
+    text-shadow: 0 2px 8px #e11d48cc;
+}
+.homepage-combo-row::-webkit-scrollbar {
+  display: none;
+}
+.homepage-combo-row h3,.combo-price {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  
+  margin-bottom: 12px;
+  color: #6B4226; /* warm brown */
+}
+/* Combo Offer Card - Soft, Minimal Palette */
+.homepage-combo-card {
+  background: #FFF7ED; /* soft cream */
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(186, 145, 86, 0.10);
+  padding: 24px 20px;
+  min-width: 420px;
+  max-width: 420px;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  position: relative;
+  overflow: hidden;
+  color: #6B4226; /* warm brown */
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.homepage-combo-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px 0 #EAD7B7, 0 2px 24px rgba(0,0,0,0.12);
+  background: #FDEEDC; /* lighter cream */
+  color: #4B2E13;
+}
+.combo-img-pair {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.combo-img-pair img {
+  height: 70px;
+  width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+}
+
+.combo-img {
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 12px #EAD7B7;
+}
+.homepage-combo-card:hover .combo-img {
+  transform: scale(1.12);
+  box-shadow: 0 4px 32px #F8CBA6;
+}
+.combo-qty-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0;
+}
+.qty-display {
+  font-size: 1.2rem;
+  margin: 0 12px;
+  font-weight: bold;
+  color: #6B4226;
+  text-shadow: 0 1px 2px #EAD7B7;
+}
+.homepage-add-btn {
+  background: #F8CBA6; /* soft pinkish beige */
+  color: #4B2E13;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 4px;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px #EAD7B7;
+  cursor: pointer;
+}
+.homepage-add-btn:hover {
+  background: #EAD7B7;
+  color: #6B4226;
+  transform: scale(1.10);
+  box-shadow: 0 0 8px var(--sprinkle-purple), 0 0 15px var(--sprinkle-green);
+}
+
+.combo-action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  width: 100%;
+}
+.homepage-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 32px 0 18px 0;
+  color: #6B4226;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+/* Search Overlay - Soft Modal */
+.search-overlay {
+  position: fixed;
+  top: 100px; /* adjust to your navbar height */
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 100px); /* fill the rest of the viewport */
+  background: #FFF7ED;
+  z-index: 9999;
+  overflow-y: auto;
+  display: block; /* allow normal block flow for scrolling */
+  box-shadow: 0 2px 24px #EAD7B7;
+  margin-bottom: 0; /* remove margin-bottom */
+  padding-bottom: 24px; /* enough space for last row, adjust as needed */
+}
+.search-overlay-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto 30px auto;
+  background: #FDEEDC;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px #F8CBA6;
+  padding: 32px 0 32px 0; /* add bottom padding for last row */
+  min-height: 60vh;
+}
+
+.search-results-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.item-card {
+  background: #FFF7ED;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #EAD7B7;
+  padding: 16px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.item-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px #F8CBA6;
+}
+.item-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-align: center;
+  color: #6B4226;
+}
+.item-price {
+  color: #4B2E13;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.item-add-btn {
+  background: #F8CBA6;
+  color: #4B2E13;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #EAD7B7;
+  transition: background 0.2s, color 0.2s;
+}
+.item-add-btn:hover {
+  background: #EAD7B7;
+  color: #6B4226;
+}
+.item-qty-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.qty-display {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #6B4226;
+  text-shadow: 0 1px 2px #EAD7B7;
+}/* Responsive styles for HomePage.css */
+
+/* Combo Row: allow horizontal scroll on mobile, reduce gaps and padding */
+@media (max-width: 1290px) {
+  .homepage-combo-row {
+    gap: 24px;
+    padding: 18px;
+    margin: 16px;
+  }
+  .homepage-combo-card {
+    min-width: 320px;
+    max-width: 320px;
+    padding: 16px 10px;
+  }
+  .combo-img-pair img {
+    width: 170px;
+    height: 100px;
+  }
+}
+
+/* Tablet and below */
+@media (max-width: 700px) {
+  .homepage-title {
+    font-size: 1.3rem;
+    margin: 18px 0 10px 0;
+  }
+  .homepage-combo-row {
+    gap: 10px;
+    padding: 6px;
+    margin: 4px;
+  }
+  .homepage-combo-card {
+    min-width: 90vw;
+    max-width: 92vw;
+    width: 92vw;
+    padding: 10px 6px;
+    font-size: 1rem;
+    border-radius: 14px;
+    height: 480px; /* Increased height for tablet */
+  }
+  .combo-img-pair {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    height: 140px; /* Increased height for images */
+    margin-bottom: 10px;
+  }
+  .combo-img-pair img {
+    width: 44vw;
+    max-width: 180px;
+    min-width: 90px;
+    height: 120px;
+    aspect-ratio: 4/3;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .video-background {
+    height: 40vh;
+    min-height: 180px;
+  }
+  .overlay h1 {
+    font-size: 2rem;
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+  .overlay p {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+  }
+  .homepage-title {
+    font-size: 1.1rem;
+    margin: 10px 0 6px 0;
+  }
+  .homepage-combo-row {
+    gap: 6px;
+    padding: 2px;
+    margin: 2px;
+  }
+  .homepage-combo-card {
+    min-width: 98vw;
+    max-width: 99vw;
+    width: 99vw;
+    padding: 6px 2vw;
+    height: 380px; /* Increased height for mobile */
+    font-size: 0.98rem;
+    border-radius: 10px;
+  }
+  .combo-img-pair {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 150px; /* Increased height for images */
+    margin-bottom: 8px;
+  }
+  .combo-img-pair img {
+    width: 80vw;
+    max-width: 220px;
+    min-width: 90px;
+    height: 130px;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+}

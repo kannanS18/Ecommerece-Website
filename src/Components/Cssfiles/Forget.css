@@ -1,0 +1,119 @@
+
+
+.forgot-container {
+  max-width: 350px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(34,48,80,0.07);
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.forgot-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #222;
+}
+
+.forgot-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-right: 5px;
+}
+
+.forgot-container label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.forgot-container input[type="email"],
+.forgot-container input[type="text"],
+.forgot-container input[type="password"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c7e3f3;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: -10px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.forgot-container input:focus {
+  border-color: #6ec1e4;
+}
+
+.forgot-container button[type="submit"] {
+  background: #6ec1e4;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.forgot-container button[type="submit"]:hover {
+  background: #4fa3c7;
+}
+
+.forgot-container .auth-error {
+  color: #e74c3c;
+  background: #ffeaea;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.forgot-container .auth-success {
+  color: #27ae60;
+  background: #eaffea;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.forgot-container .password-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.forgot-container .password-wrapper input {
+  flex: 1;
+  padding-right: 36px;
+}
+
+.forgot-container .eye-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.forgot-container button[style] {
+
+  background: none;
+  border: none;
+  color: #6ec1e4;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  margin-top: 18px;
+  padding: 0;
+}

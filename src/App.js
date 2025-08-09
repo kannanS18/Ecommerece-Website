@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AdminLogin from './Components/Jsxfules/AdminLogin';
+import AdminLayout from './Layouts/AdminLayout';
+import DefaultLayout from './Layouts/DefaultLayout';
+import Footer from './Components/Jsxfules/Footer';
+import AdminGuard from './Components/Jsxfules/AdminGuard';
+import UserGuard from './Components/Jsxfules/UserGuard';
+import ScroolToTop from './Components/Jsxfules/ScroolToTop';
 
-function App() {
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <ScroolToTop />
+      <Routes>
+        <Route path="/ItsmeAdmin/login" element={
+          <UserGuard>
+            <AdminLogin />
+          </UserGuard>
+        } />
+        
+        {/* ✅ Protect Admin Layout */}
+        <Route
+          path="/ItsmeAdmin/*"
+          element={
+            <AdminGuard>
+              <AdminLayout />
+            </AdminGuard>
+          }
+        />
+
+        {/* ✅ Normal User Layout - exclude admin routes */}
+        <Route path="/*" element={
+          <UserGuard>
+            <DefaultLayout />
+          </UserGuard>
+        } />
+      </Routes>
+
+      
+    </Router>
   );
 }
-
-export default App;

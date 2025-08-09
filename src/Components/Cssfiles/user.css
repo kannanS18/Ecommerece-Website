@@ -1,0 +1,237 @@
+.admin-users-container {
+  padding: 32px;
+  margin-left: 240px;
+  margin-top: 0;
+  background: #f7f7f7;
+  min-height: 100vh;
+  overflow-x: auto;
+}
+
+.admin-users-container h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.admin-users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-users-table th,
+.admin-users-table td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+
+.admin-users-table th {
+  background: #f1f1f1;
+  font-weight: bold;
+  color: #444;
+}
+
+.admin-users-table td input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.admin-users-table button {
+  margin-right: 8px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.admin-users-table button:hover {
+  background-color: #1976d2;
+}
+
+.admin-users-table .delete {
+  background-color: #e53935;
+}
+
+.admin-users-table .delete:hover {
+  background-color: #c62828;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .admin-users-container {
+    margin-left: 0;
+    padding: 80px 16px 24px 16px;
+  }
+  
+  .admin-users-table {
+    font-size: 14px;
+  }
+  
+  .admin-users-table th,
+  .admin-users-table td {
+    padding: 14px 12px;
+  }
+}
+
+.admin-users-cards {
+  display: none;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .admin-users-container {
+    margin-left: 0;
+    padding: 70px 12px 16px 12px;
+  }
+  
+  .admin-users-container h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .admin-users-table {
+    display: none;
+  }
+  
+  .admin-users-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .user-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #2196f3;
+  }
+  
+  .user-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .user-card-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .user-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .user-card-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .user-card-label {
+    font-weight: 500;
+    color: #666;
+    min-width: 60px;
+  }
+  
+  .user-card-value {
+    flex: 1;
+    margin-left: 8px;
+  }
+  
+  .user-card-value input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .user-card-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .user-card button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #2196f3;
+    color: #fff;
+  }
+  
+  .user-card button.delete {
+    background-color: #e53935;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .admin-users-container {
+    margin-left: 0;
+    padding: 60px 8px 12px 8px;
+  }
+  
+  .admin-users-container h2 {
+    font-size: 18px;
+  }
+  
+  .user-card {
+    padding: 12px;
+  }
+  
+  .user-card-name {
+    font-size: 14px;
+  }
+  
+  .user-card-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .user-card-label {
+    font-size: 12px;
+    min-width: auto;
+  }
+  
+  .user-card-value {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .user-card-value input {
+    font-size: 12px;
+    padding: 5px 6px;
+  }
+  
+  .user-card-actions {
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .user-card button {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+}
