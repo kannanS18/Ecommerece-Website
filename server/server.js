@@ -529,8 +529,8 @@ app.post('/api/payment/create-checkout-session', async (req, res) => {
       quantity: item.quantity,
     })),
     mode: 'payment',
-    success_url: `http://localhost:3000/success?order_id=${order_id}`,
-    cancel_url: 'http://localhost:3000/cancel',
+    success_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/success?order_id=${order_id}`,
+    cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/cancel`,
   });
 
   res.json(session);
