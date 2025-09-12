@@ -299,7 +299,7 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
                       className="item-image"
                        onClick={() => handleImageClick(item)}
                         style={{ cursor: "pointer" }}
-                      onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                      onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}
                     />
                     <h3 className="item-title">{item.Title}</h3>
                     <div className="item-price">₹{item.price.toFixed(2)}</div>
@@ -331,7 +331,7 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
                       src={`/Food/${img ? img.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
                       alt={combo.Title}
                       className="combo-img"
-                      onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                      onError={e => { e.target.src = 'https://via.placeholder.com/200x150/FAECD9/6B4226?text=Combo'; }}
                       style={{ width: '100px', margin: '0 4px', borderRadius: '8px' }}
                     />
                   ))}
