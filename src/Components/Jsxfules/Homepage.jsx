@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import InfiniteMenu from './infiniteItem';
-
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../Cssfiles/HomePage.css';
-import video from '../../Images/homevideo.mp4';
+
+const InfiniteMenu = lazy(() => import('./infiniteItem'));
 
 const toSlug = (str) =>
   str
@@ -315,8 +314,7 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
       {/* Normal homepage content below (only visible when not searching) */}
       {!searchTerm && (
         <>
-          <div className={`video-background`}>
-            <video src={video} autoPlay loop muted></video>
+          <div className="video-background" style={{ background: 'linear-gradient(135deg, #FAECD9 0%, #F8CBA6 100%)', minHeight: '50vh' }}>
             <div className="overlay">
               <h1>Doughy Delights</h1>
               <p>Baked with Love, Served with Joy</p>
@@ -388,7 +386,9 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
           </div>
           <h2 className="homepage-title">Browse by Category</h2>
           <div style={{ height: '500px', position: 'relative' }}>
-            <InfiniteMenu items={menuItems} onMenuClick={handleMenuClick} />
+            <Suspense fallback={<div style={{ color: '#6B4226' }}>Loading...</div>}>
+              <InfiniteMenu items={menuItems} onMenuClick={handleMenuClick} />
+            </Suspense>
           </div>
         </>
       )}
