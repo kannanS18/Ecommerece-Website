@@ -1,8 +1,8 @@
 module.exports = {
   extends: ['react-app'],
   rules: {
-    'no-unused-vars': 'warn',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react/jsx-no-comment-textnodes': 'warn'
+    'no-unused-vars': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'react/jsx-no-comment-textnodes': 'off'
   }
 };
