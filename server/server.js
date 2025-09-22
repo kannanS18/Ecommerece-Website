@@ -682,31 +682,11 @@ app.post('/api/reviews', async (req, res) => {
 // Get reviews for an item
 app.get('/api/reviews/:itemId', async (req, res) => {
   try {
-    console.log('🔍 Fetching reviews for itemId:', req.params.itemId);
-    
-    // First try exact match
-    let reviews = await Review.find({ itemId: req.params.itemId })
+    const reviews = await Review.find({ itemId: req.params.itemId })
       .sort({ createdAt: -1 })
       .limit(50);
-    
-    console.log('🔍 Found reviews with exact match:', reviews.length);
-    
-    // If no reviews found, get all reviews for debugging
-    if (reviews.length === 0) {
-      const allReviews = await Review.find({}).sort({ createdAt: -1 });
-      console.log('🔍 All reviews in database:', allReviews.length);
-      console.log('🔍 Sample itemIds in reviews:', allReviews.slice(0, 3).map(r => r.itemId));
-      
-      // For now, return all reviews to see them
-      reviews = allReviews;
-    }
-    
-    if (reviews.length > 0) {
-      console.log('🔍 Sample review:', { itemId: reviews[0].itemId, userName: reviews[0].userName });
-    }
     res.json(reviews);
   } catch (error) {
-    console.error('❌ Review fetch error:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
   }
 });
@@ -721,6 +701,24 @@ app.get('/api/reviews/:itemId/:userEmail', async (req, res) => {
     res.json(review);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch user review' });
+  }
+});
+
+// Check if user can review item (has delivered order with this item)
+app.get('/api/can-review/:itemId/:userEmail', async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.itemId);
+    if (!item) return res.json({ canReview: false });
+    
+    const deliveredOrders = await Order.find({
+      registerEmail: req.params.userEmail,
+      status: { $in: ['delivered', 'Reservation Over'] },
+      'items.name': item.Title
+    });
+    
+    res.json({ canReview: deliveredOrders.length > 0 });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to check review permission' });
   }
 });
 

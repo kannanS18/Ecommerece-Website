@@ -648,7 +648,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
           user={user} 
           onClose={handleCloseReviews}
           onReviewUpdate={onItemsUpdate}
-          canReview={true}
+          canReview={user ? true : false}
         />
       )}
     </div>

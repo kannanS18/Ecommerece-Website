@@ -10,6 +10,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+  const [actualCanReview, setActualCanReview] = useState(false);
 
   const handleRatingInputChange = (e) => {
     const value = parseFloat(e.target.value) || 0;
@@ -23,6 +24,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
       fetchReviews();
       if (user) {
         fetchUserReview();
+        checkCanReview();
       }
     }
   }, [item, user]);
@@ -46,6 +48,15 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
       }
     } catch (error) {
       // User hasn't reviewed yet
+    }
+  };
+
+  const checkCanReview = async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/can-review/${item._id}/${user.registerEmail || user.email}`);
+      setActualCanReview(res.data.canReview);
+    } catch (error) {
+      setActualCanReview(false);
     }
   };
 
@@ -141,7 +152,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
           </div>
 
           {/* User Review Section */}
-          {user && canReview && (
+          {user && actualCanReview && (
             <div className="user-review-section">
               <h3>{userReview ? 'Your Review' : 'Write a Review'}</h3>
               <div className="rating-input">
@@ -197,9 +208,9 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
           )}
           
           {/* Show message if user can't review */}
-          {user && !canReview && (
+          {user && !actualCanReview && (
             <div className="no-review-permission">
-              <p>You can only review items you have purchased. Complete an order to leave a review!</p>
+              <p>You can only review items you have purchased and received!</p>
             </div>
           )}
 
