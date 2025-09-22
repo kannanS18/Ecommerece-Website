@@ -683,10 +683,24 @@ app.post('/api/reviews', async (req, res) => {
 app.get('/api/reviews/:itemId', async (req, res) => {
   try {
     console.log('🔍 Fetching reviews for itemId:', req.params.itemId);
-    const reviews = await Review.find({ itemId: req.params.itemId })
+    
+    // First try exact match
+    let reviews = await Review.find({ itemId: req.params.itemId })
       .sort({ createdAt: -1 })
       .limit(50);
-    console.log('🔍 Found reviews:', reviews.length);
+    
+    console.log('🔍 Found reviews with exact match:', reviews.length);
+    
+    // If no reviews found, get all reviews for debugging
+    if (reviews.length === 0) {
+      const allReviews = await Review.find({}).sort({ createdAt: -1 });
+      console.log('🔍 All reviews in database:', allReviews.length);
+      console.log('🔍 Sample itemIds in reviews:', allReviews.slice(0, 3).map(r => r.itemId));
+      
+      // For now, return all reviews to see them
+      reviews = allReviews;
+    }
+    
     if (reviews.length > 0) {
       console.log('🔍 Sample review:', { itemId: reviews[0].itemId, userName: reviews[0].userName });
     }
