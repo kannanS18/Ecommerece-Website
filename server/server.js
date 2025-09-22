@@ -25,7 +25,7 @@ app.use('/api/order', downloadRoute); // Use the download route
 app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
 
-mongoose.connect('mongodb://localhost:27017/ecomm', {
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -705,6 +705,7 @@ app.delete('/api/reviews/:itemId/:userEmail', async (req, res) => {
 
 
 // app.use(adminRoutes);
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
