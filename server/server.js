@@ -20,15 +20,25 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['https://ecommerece-website-ivory.vercel.app', 'https://ecommerece-website-bf3q.vercel.app', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use('/api/order', downloadRoute); // Use the download route
 app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
-
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
 });
+
+
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm')
+  .then(() => console.log('✅ MongoDB connected successfully'))
+  .catch(err => {
+    console.error('❌ MongoDB connection failed:', err.message);
+    // Don't exit, let server run without DB for health checks
+  });
 
 const storage = multer.memoryStorage();
 const upload = multer(
