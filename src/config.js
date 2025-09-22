@@ -5,7 +5,9 @@ console.log('Environment check:', {
   all_env: Object.keys(process.env).filter(key => key.startsWith('REACT_APP'))
 });
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://ecommerece-website-1.onrender.com';
+// Temporarily hardcode for testing
+const API_BASE_URL = 'https://ecommerece-website-1.onrender.com';
+// const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://ecommerece-website-1.onrender.com';
 
 console.log('Final API_BASE_URL:', API_BASE_URL);
 
