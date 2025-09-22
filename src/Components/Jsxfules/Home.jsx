@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "../Cssfiles/home.css";
 import ReviewModal from './ReviewModal';
+import { API_BASE_URL } from '../../config';
 
 const toSlug = (str) =>
   str.toLowerCase().replace(/[\s/&]+/g, '-').replace(/-+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/^-|-$/g, '');
@@ -92,7 +93,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
       const timeout = setTimeout(() => {
         setIsExiting(false);
         setPrevSlideKey(slideKey);
-      }, 400); // match this with your CSS exit animation duration
+      }, 400);
       return () => clearTimeout(timeout);
     }
   }, [slideKey]);
@@ -121,7 +122,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
   const handleCardClick = (id) => {
     const item = items.find(i => i._id === id);
     setOverlayItem(item);
-    setQuantities(q => ({ ...q, [id]: q[id] || 1 })); // Ensure quantity is at least 1
+    setQuantities(q => ({ ...q, [id]: q[id] || 1 }));
     fetchOverlayReviews(id);
   };
 
@@ -152,7 +153,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
 
   const fetchOverlayReviews = async (itemId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/reviews/${itemId}`);
+      const res = await axios.get(`${API_BASE_URL}/api/reviews/${itemId}`);
       setOverlayReviews(res.data);
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
@@ -162,7 +163,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
   const fetchOverlayUserReview = async (itemId) => {
     if (!user) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/reviews/${itemId}/${user.registerEmail || user.email}`);
+      const res = await axios.get(`${API_BASE_URL}/api/reviews/${itemId}/${user.registerEmail || user.email}`);
       if (res.data) {
         setOverlayUserReview(res.data);
         setOverlayRating(res.data.rating);
@@ -176,7 +177,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
   const handleOverlayReviewSubmit = async () => {
     if (!overlayItem || overlayRating === 0) return;
     try {
-      await axios.post('http://localhost:5000/api/reviews', {
+      await axios.post(`${API_BASE_URL}/api/reviews`, {
         itemId: overlayItem._id,
         userEmail: user.registerEmail || user.email,
         userName: user.registerName || user.name,
@@ -227,7 +228,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
   const handleDec = (id) => {
     setQuantities(q => {
       const newQty = (q[id] || 1) - 1;
-      if (newQty < 1) return { ...q, [id]: 1 }; // Prevent going below 1
+      if (newQty < 1) return { ...q, [id]: 1 };
       return { ...q, [id]: newQty };
     });
   };
@@ -241,7 +242,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
     }
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/order/${user.registerEmail}`);
+      const res = await axios.get(`${API_BASE_URL}/api/order/${user.registerEmail}`);
       let pendingOrder = res.data.find(o => !o.isFinalised && o.status === 'pending');
 
       const quantity = qty || quantities[id] || 1;
@@ -261,13 +262,13 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
           newItems.push(itemPayload);
         }
         const newTotal = newItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
-        await axios.put(`http://localhost:5000/api/order/${pendingOrder._id}`, {
+        await axios.put(`${API_BASE_URL}/api/order/${pendingOrder._id}`, {
           ...pendingOrder,
           items: newItems,
           total: newTotal
         });
       } else {
-        await axios.post('http://localhost:5000/api/order', {
+        await axios.post(`${API_BASE_URL}/api/order`, {
           registerEmail: user.registerEmail,
           registerName: user.registerName,
           address: user.address,
@@ -296,7 +297,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
       return;
     }
     try {
-      const res = await axios.get(`http://localhost:5000/api/order/${user.registerEmail}`);
+      const res = await axios.get(`${API_BASE_URL}/api/order/${user.registerEmail}`);
       let pendingOrder = res.data.find(o => !o.isFinalised && o.status === 'pending');
       const itemsPayload = comboItems.map(i => ({
         name: i.Title,
@@ -316,13 +317,13 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
           }
         });
         const newTotal = newItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
-        await axios.put(`http://localhost:5000/api/order/${pendingOrder._id}`, {
+        await axios.put(`${API_BASE_URL}/api/order/${pendingOrder._id}`, {
           ...pendingOrder,
           items: newItems,
           total: newTotal
         });
       } else {
-        await axios.post('http://localhost:5000/api/order', {
+        await axios.post(`${API_BASE_URL}/api/order`, {
           registerEmail: user.registerEmail,
           registerName: user.registerName,
           address: user.address,
@@ -439,7 +440,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
                         : 'slide-from-bottom'
                       : 'slide-up'
                   }`}
-                  onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                  onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}
                 />
               </div>
             ))}
@@ -460,7 +461,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
               src={`/Food/${item.Image_Name ? item.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
               alt={item.Title || item.name}
               className="home-card-img"
-              onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+              onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}
             />
             <h3 className="home-card-title">{item.Title}</h3>
             <div className="home-card-rating">
@@ -515,7 +516,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
                             src={`/Food/${overlayItem.Image_Name ? overlayItem.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
                             alt={overlayItem.Title}
                             className="item-overlay-img"
-                            onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                            onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}
                           />
                         </div>
                       );
@@ -637,7 +638,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
 
             </div>
           </div>
-        // </div>
+        </div>
       )}
 
       {/* Review Modal */}
