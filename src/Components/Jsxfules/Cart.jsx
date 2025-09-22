@@ -3,6 +3,7 @@ import axios from 'axios';
 import "../Cssfiles/Cart.css";
 import { loadStripe } from '@stripe/stripe-js';
 import ReviewModal from './ReviewModal';
+import { API_BASE_URL } from '../../config';
 
 export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCartUpdate, onItemsUpdate }) {
   const [orders, setOrders] = useState([]);
@@ -54,7 +55,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
   ];
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/update-reservation-statuses')
+    axios.get(`${API_BASE_URL}/api/update-reservation-statuses`)
       .catch((err) => console.error("Error updating reservations", err));
     fetchOrders();
     fetchItems();
@@ -69,7 +70,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/items');
+      const res = await axios.get(`${API_BASE_URL}/api/items`);
       setItems(res.data);
     } catch (error) {
       console.error('Failed to fetch items:', error);
@@ -79,7 +80,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
   useEffect(() => {
     const fetchSlotCounts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/timeslot-counts');
+        const res = await axios.get(`${API_BASE_URL}/api/timeslot-counts`);
         setSlotCounts(res.data);
       } catch (err) {
         console.error('Failed to fetch slot counts');
@@ -90,7 +91,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/order/${registerEmail}`);
+      const res = await axios.get(`${API_BASE_URL}/api/order/${registerEmail}`);
       const ordersWithImages = res.data.map(order => ({
         ...order,
         items: order.items.map(item => {
@@ -133,7 +134,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
     }
     const checkProfile = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/user/${registerEmail}`);
+        const res = await axios.get(`${API_BASE_URL}/api/user/${registerEmail}`);
         const { address, phone } = res.data;
         setProfileValid(!!address && !!phone);
       } catch {
@@ -168,7 +169,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
   const handleDelete = async (orderId) => {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/order/${orderId}`);
+      await axios.delete(`${API_BASE_URL}/api/order/${orderId}`);
       fetchOrders();
       onCartUpdate?.();
     } catch (err) {
@@ -185,7 +186,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
 
     try {
       if (order.type === 'dine in') {
-        const res = await axios.get('http://localhost:5000/api/order/' + order.registerEmail);
+        const res = await axios.get(`${API_BASE_URL}/api/order/` + order.registerEmail);
         const allOrders = res.data;
 
         if (!order.dineInDate || !order.dineInTime) {
@@ -206,7 +207,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
           return;
         }
 
-        const slotRes = await axios.get('http://localhost:5000/api/timeslot-counts');
+        const slotRes = await axios.get(`${API_BASE_URL}/api/timeslot-counts`);
         const slotCounts = slotRes.data;
         const slotKey = `${order.dineInDate}_${order.dineInTime}`;
         const count = slotCounts[slotKey] || 0;
@@ -224,7 +225,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
         total: updatedTotal,
       });
 
-      const foodsRes = await axios.get('http://localhost:5000/api/items');
+      const foodsRes = await axios.get(`${API_BASE_URL}/api/items`);
       const foods = foodsRes.data;
 
       const itemsWithImages = order.items.map(item => {
@@ -261,7 +262,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
           order_id: order._id
         }
       };
-      const ress = await axios.post('http://localhost:5000/api/payment/create-checkout-session', body);
+      const ress = await axios.post(`${API_BASE_URL}/api/payment/create-checkout-session`, body);
       const session = ress.data;
 
       await stripe.redirectToCheckout({ sessionId: session.id });
@@ -319,7 +320,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
           </p>
           <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
             <a
-              href={`http://localhost:5000/api/order/bill/${order._id}/download`}
+              href={`${API_BASE_URL}/api/order/bill/${order._id}/download`}
               target="_blank"
               rel="noopener noreferrer"
               download
@@ -343,7 +344,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
   const handleFinalizePayment = async () => {
     if (!pendingFinalizeOrderId) return;
     try {
-      await axios.put(`http://localhost:5000/api/order/${pendingFinalizeOrderId}/finalise`, {
+      await axios.put(`${API_BASE_URL}/api/order/${pendingFinalizeOrderId}/finalise`, {
         status: 'ordered',
       });
       sessionStorage.removeItem('pendingFinalizeOrderId');

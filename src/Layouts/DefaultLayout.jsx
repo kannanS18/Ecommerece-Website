@@ -11,6 +11,7 @@ import Footer from '../Components/Jsxfules/Footer';
 import Contact from '../Components/Jsxfules/Contact';
 import AboutUs from '../Components/Jsxfules/About';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const toSlug = (str) =>
   str
@@ -75,7 +76,7 @@ export default function DefaultLayout() {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         const email = payload.email;
-        const res = await axios.get(`http://localhost:5000/api/user/${email}`);
+        const res = await axios.get(`${API_BASE_URL}/api/user/${email}`);
         const u = res.data;
         const userData = {
           ...u,
@@ -99,7 +100,7 @@ export default function DefaultLayout() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/items');
+      const res = await axios.get(`${API_BASE_URL}/api/items`);
       setItems(res.data);
       const cats = [...new Set(res.data.map(item => item.category))];
       setCategories(cats);
@@ -135,7 +136,7 @@ export default function DefaultLayout() {
       return;
     }
     try {
-      const res = await axios.get(`http://localhost:5000/api/order/${user.registerEmail || user.email}`);
+      const res = await axios.get(`${API_BASE_URL}/api/order/${user.registerEmail || user.email}`);
       const pendingOrder = res.data.find(o => !o.isFinalised && o.status === 'pending');
       if (pendingOrder && Array.isArray(pendingOrder.items)) {
         const totalQty = pendingOrder.items.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -169,7 +170,7 @@ export default function DefaultLayout() {
 
   const handleProfileSave = async (updatedUser) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/user/${updatedUser.email || updatedUser.registerEmail}`);
+      const res = await axios.get(`${API_BASE_URL}/api/user/${updatedUser.email || updatedUser.registerEmail}`);
       const u = res.data;
       const userData = {
         ...u,
