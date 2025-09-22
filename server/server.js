@@ -239,8 +239,13 @@ app.put('/api/user/:email', (req, res, next) => {
 app.get('/api/items', async (req, res) => {
   try {
     console.log('🔍 Database name:', mongoose.connection.db.databaseName);
+    
+    // Test raw MongoDB query
+    const rawItems = await mongoose.connection.db.collection('items').find({}).limit(1).toArray();
+    console.log('🔍 Raw items sample:', rawItems.length > 0 ? Object.keys(rawItems[0]) : 'No items');
+    
     const items = await Item.find();
-    console.log('🔍 Items found:', items.length);
+    console.log('🔍 Items found via model:', items.length);
     res.json(items);
   } catch (err) {
     console.error('❌ Items error:', err);
