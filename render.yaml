@@ -2,6 +2,6 @@ services:
   - type: web
     name: ecomm-backend
     env: node
-    rootDir: ./server
+    rootDir: server
     buildCommand: npm install
     startCommand: npm start
