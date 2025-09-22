@@ -33,6 +33,7 @@ app.get('/api/health', (req, res) => {
 });
 
 
+console.log('🔍 MONGO_URI:', process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm')
   .then(() => console.log('✅ MongoDB connected successfully'))
   .catch(err => {
