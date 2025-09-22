@@ -624,7 +624,7 @@ app.post('/api/admin/update-ratings', async (req, res) => {
   }
 });
 
-app.post('/api/admin/fix-review-ids', async (req, res) => {
+app.get('/api/admin/fix-review-ids', async (req, res) => {
   try {
     const items = await Item.find();
     const reviews = await Review.find();
