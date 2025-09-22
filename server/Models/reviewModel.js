@@ -26,7 +26,7 @@ const reviewSchema = new mongoose.Schema({
   }
 }, { 
   timestamps: true,
-  collection: 'Reviews' 
+  collection: 'reviews' 
 });
 
 // Ensure one review per user per item
