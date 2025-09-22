@@ -10,6 +10,6 @@ const itemSchema = new mongoose.Schema({
   price: { type: Number },
   averageRating: { type: Number, default: 0, min: 0, max: 5 },
   reviewCount: { type: Number, default: 0, min: 0 }
-}, { collection: 'Items' });
+}, { collection: 'items' });
 
 module.exports = mongoose.model('Item', itemSchema);
