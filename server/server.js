@@ -629,26 +629,36 @@ app.get('/api/admin/fix-review-ids', async (req, res) => {
     const items = await Item.find();
     const reviews = await Review.find();
     
-    console.log(`Found ${items.length} items and ${reviews.length} reviews`);
+    let debugInfo = `Found ${items.length} items and ${reviews.length} reviews\n\n`;
     
     // Get items with ratings
     const itemsWithRatings = items.filter(item => item.reviewCount > 0);
-    console.log('Items with ratings:', itemsWithRatings.map(i => `${i.Title} (${i._id})`));
+    debugInfo += 'Items with ratings:\n';
+    itemsWithRatings.forEach(item => {
+      debugInfo += `- "${item.Title}" (_id: ${item._id}): ${item.reviewCount} reviews\n`;
+    });
     
-    // Update reviews to match items
+    debugInfo += '\nCurrent reviews:\n';
+    reviews.forEach(review => {
+      debugInfo += `- ${review.userName}: itemId=${review.itemId}, rating=${review.rating}\n`;
+    });
+    
+    // Force update all reviews to match the first item with ratings
     let updated = 0;
-    for (let i = 0; i < Math.min(itemsWithRatings.length, reviews.length); i++) {
-      const item = itemsWithRatings[i];
-      const review = reviews[i];
+    if (itemsWithRatings.length > 0 && reviews.length > 0) {
+      const targetItem = itemsWithRatings[0]; // Use first item with ratings
       
-      if (review.itemId.toString() !== item._id.toString()) {
-        await Review.findByIdAndUpdate(review._id, { itemId: item._id });
-        console.log(`Updated review by ${review.userName} to itemId: ${item._id} (${item.Title})`);
-        updated++;
+      for (const review of reviews) {
+        if (review.itemId.toString() !== targetItem._id.toString()) {
+          await Review.findByIdAndUpdate(review._id, { itemId: targetItem._id });
+          debugInfo += `\nUpdated review by ${review.userName} to itemId: ${targetItem._id} (${targetItem.Title})`;
+          updated++;
+        }
       }
     }
     
-    res.send(`Fixed ${updated} review itemIds`);
+    debugInfo += `\n\nFixed ${updated} review itemIds`;
+    res.send(debugInfo.replace(/\n/g, '<br>'));
   } catch (error) {
     console.error('❌ Error fixing review IDs:', error);
     res.status(500).send("Failed to fix review IDs.");
