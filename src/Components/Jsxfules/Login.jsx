@@ -5,6 +5,7 @@ import ForgetPass from './ForgetPass';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { secureStorage } from '../../utils/storage';
+import { API_BASE_URL } from '../../config';
 
 export default function Login({ setUser, defaultTab = 'register', onClose }) {
   const navigate = useNavigate(); 
@@ -73,7 +74,7 @@ const handleLogin = async e => {
 
     try {
       const payload = { loginUser, loginPassword };
-      const result = await axios.post("http://localhost:5000/api/login", payload);
+      const result = await axios.post(`${API_BASE_URL}/api/login`, payload);
       if (result.data && result.data.error) {
         loginError = result.data.error;
       } else if (result.data && result.data.message === 'Login successful') {
@@ -101,7 +102,7 @@ const handleLogin = async e => {
         if (loginSuccess && userEmail) {
           try {
             // Always fetch full profile after login
-            const res = await axios.get(`http://localhost:5000/api/user/${userEmail}`);
+            const res = await axios.get(`${API_BASE_URL}/api/user/${userEmail}`);
             userObj = res.data;
             const userData = {
               ...userObj,
@@ -185,7 +186,7 @@ const handleRegister = async e => {
         setShowAuthCard(false);
 
         try {
-          const result = await axios.post("http://localhost:5000/api/register", { name: registerName, email: registerEmail, password: registerPassword });
+          const result = await axios.post(`${API_BASE_URL}/api/register`, { name: registerName, email: registerEmail, password: registerPassword });
           if (result.data && result.data.error) {
             setError(result.data.error);
             setAnimStep("form");
@@ -194,7 +195,7 @@ const handleRegister = async e => {
             sessionStorage.setItem('token', result.data.token);
             const email = result.data.user.email;
             // Always fetch full profile after register
-            const res = await axios.get(`http://localhost:5000/api/user/${email}`);
+            const res = await axios.get(`${API_BASE_URL}/api/user/${email}`);
             const userObj = res.data;
             const userData = {
               ...userObj,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Cssfiles/Profile.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
 
 export default function Profile({ email, onClose, onSave }) {
     const [showImgModal, setShowImgModal] = useState(false);
@@ -26,7 +27,7 @@ export default function Profile({ email, onClose, onSave }) {
       try {
         // setLoading(true);
         // setError('');
-        const res = await axios.get(`http://localhost:5000/api/user/${email}`);
+        const res = await axios.get(`${API_BASE_URL}/api/user/${email}`);
         const userData = {
           name: res.data.name || '',
           email: res.data.email || '',
@@ -54,10 +55,10 @@ export default function Profile({ email, onClose, onSave }) {
 
   const handleRemoveImg = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/user/${email}`, { removeImg: true });
+      await axios.put(`${API_BASE_URL}/api/user/${email}`, { removeImg: true });
       setImg(null);
       setForm(f => ({ ...f, img: null }));
-      const res = await axios.get(`http://localhost:5000/api/user/${email}`);
+      const res = await axios.get(`${API_BASE_URL}/api/user/${email}`);
       onSave(res.data);
     } catch (err) {
       alert('Failed to remove image.');
@@ -90,12 +91,12 @@ export default function Profile({ email, onClose, onSave }) {
       formData.append('age', form.age);
       if (img) formData.append('img', img);
 
-      await axios.put(`http://localhost:5000/api/user/${email}`, formData, {
+      await axios.put(`${API_BASE_URL}/api/user/${email}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       // Fetch updated user and update parent state
-      const res = await axios.get(`http://localhost:5000/api/user/${email}`);
+      const res = await axios.get(`${API_BASE_URL}/api/user/${email}`);
       onSave(res.data);
   
       setForm({

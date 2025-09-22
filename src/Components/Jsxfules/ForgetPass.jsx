@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Cssfiles/Forget.css';
+import { API_BASE_URL } from '../../config';
 
 export default function ForgetPass({ onBackToLogin }) {
   const [step, setStep] = useState(1);
@@ -19,7 +20,7 @@ export default function ForgetPass({ onBackToLogin }) {
     setSuccess('');
     try {
       // Backend should accept either email or username as "identifier"
-      await axios.post('http://localhost:5000/api/forgot-password', { identifier });
+      await axios.post(`${API_BASE_URL}/api/forgot-password`, { identifier });
       setStep(2);
     } catch (err) {
       setError(err.response?.data?.error || 'User not found');
@@ -36,7 +37,7 @@ export default function ForgetPass({ onBackToLogin }) {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/api/forgot-password', {
+      await axios.post(`${API_BASE_URL}/api/forgot-password`, {
         identifier,
         newPassword
       });
