@@ -21,7 +21,7 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: ['https://ecommerece-website-ivory.vercel.app', 'https://ecommerece-website-bf3q.vercel.app', 'http://localhost:3000'],
+  origin: true,
   credentials: true
 }));
 app.use('/api/order', downloadRoute); // Use the download route
