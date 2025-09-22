@@ -683,25 +683,9 @@ app.post('/api/reviews', async (req, res) => {
 app.get('/api/reviews/:itemId', async (req, res) => {
   try {
     console.log('🔍 Fetching reviews for itemId:', req.params.itemId);
-    let reviews = await Review.find({ itemId: req.params.itemId })
+    const reviews = await Review.find({ itemId: req.params.itemId })
       .sort({ createdAt: -1 })
       .limit(50);
-    
-    // If no reviews found with exact itemId, try to find by any existing itemId pattern
-    if (reviews.length === 0) {
-      console.log('🔍 No reviews found with exact itemId, searching all reviews...');
-      const allReviews = await Review.find({}).sort({ createdAt: -1 });
-      console.log('🔍 Total reviews in database:', allReviews.length);
-      
-      // Get the item to match by title if needed
-      const item = await Item.findById(req.params.itemId);
-      if (item) {
-        console.log('🔍 Item found:', item.Title);
-        // For now, return all reviews as a temporary fix
-        reviews = allReviews.slice(0, 10);
-      }
-    }
-    
     console.log('🔍 Found reviews:', reviews.length);
     if (reviews.length > 0) {
       console.log('🔍 Sample review:', { itemId: reviews[0].itemId, userName: reviews[0].userName });
