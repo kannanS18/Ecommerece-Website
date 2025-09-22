@@ -596,10 +596,10 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                 {order.items.map((item, idx) => (
                   <div key={idx} className="item-horizontal-card">
                     <img
-                      src={item.image ? `/Food/${item.image}` : '/Food/fresh-homemade-pita-alon-shaya.jpg'}
+                      src={item.image ? `${API_BASE_URL}/Food/${item.image}` : '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'}
                       alt={item.name}
                       className="item-horizontal-img"
-                      onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                      onError={e => { e.target.src = '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
                     />
                     <div className="item-horizontal-content">
                       <div className="item-horizontal-header">
@@ -710,10 +710,10 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                   <li key={idx} className="order-item">
                     <div className="order-item-content">
                       <img 
-                        src={item.image ? `/Food/${item.image}` : '/Food/fresh-homemade-pita-alon-shaya.jpg'}
+                        src={item.image ? `${API_BASE_URL}/Food/${item.image}` : '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'}
                         alt={item.name}
                         className="order-item-img"
-                        onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                        onError={e => { e.target.src = '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
                       />
                       <div className="order-item-details">
                         <div className="order-item-name">{item.name}</div>
@@ -770,10 +770,10 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                     <li key={idx} className="order-item">
                       <div className="order-item-content">
                         <img 
-                          src={item.image ? `/Food/${item.image}` : '/Food/fresh-homemade-pita-alon-shaya.jpg'}
+                          src={item.image ? `${API_BASE_URL}/Food/${item.image}` : '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'}
                           alt={item.name}
                           className="order-item-img"
-                          onError={e => { e.target.src = '/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
+                          onError={e => { e.target.src = '${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg'; }}
                         />
                         <div className="order-item-details">
                           <div className="order-item-name">

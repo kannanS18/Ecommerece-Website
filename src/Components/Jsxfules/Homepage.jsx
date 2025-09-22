@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../Cssfiles/HomePage.css';
+import { API_BASE_URL } from '../../config';
 
 const InfiniteMenu = lazy(() => import('./infiniteItem'));
 
@@ -23,8 +24,8 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
   const menuItems = categories.map((cat) => {
     const item = itemsForMenu.find(i => i.category === cat);
     const image = item?.Image_Name
-      ? `/Food/${item.Image_Name.trim()}.jpg`
-      : "/Food/fresh-homemade-pita-alon-shaya.jpg";
+      ? `${API_BASE_URL}/Food/${item.Image_Name.trim()}.jpg`
+      : `${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg`;
     return {
       image,
       title: cat,
@@ -89,7 +90,7 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
       return;
     }
     try {
-      const res = await axios.get(`http://localhost:5000/api/order/${user.registerEmail}`);
+      const res = await axios.get(`${API_BASE_URL}/api/order/${user.registerEmail}`);
       let pendingOrder = res.data.find(o => !o.isFinalised && o.status === 'pending');
       const qty = comboQuantities[combo._id] || 1;
       const comboItems = combo.items.map(i => ({
@@ -110,13 +111,13 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
           }
         });
         const newTotal = newItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
-        await axios.put(`http://localhost:5000/api/order/${pendingOrder._id}`, {
+        await axios.put(`${API_BASE_URL}/api/order/${pendingOrder._id}`, {
           ...pendingOrder,
           items: newItems,
           total: newTotal
         });
       } else {
-        await axios.post('http://localhost:5000/api/order', {
+        await axios.post(`${API_BASE_URL}/api/order`, {
           registerEmail: user.registerEmail,
           registerName: user.registerName,
           address: user.address,
@@ -292,8 +293,8 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
                     <img
                       src={
                         item.Image_Name
-                          ? `/Food/${item.Image_Name.trim()}.jpg`
-                          : '/Food/fresh-homemade-pita-alon-shaya.jpg'
+                          ? `${API_BASE_URL}/Food/${item.Image_Name.trim()}.jpg`
+                          : `${API_BASE_URL}/Food/fresh-homemade-pita-alon-shaya.jpg`
                       }
                       alt={item.Title}
                       className="item-image"
@@ -328,7 +329,7 @@ export default function Homepage({ items = [], categories = [], onCartUpdate, on
                   {combo.Image_Names.map((img, idx) => (
                     <img
                       key={idx}
-                      src={`/Food/${img ? img.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
+                      src={`${API_BASE_URL}/Food/${img ? img.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
                       alt={combo.Title}
                       className="combo-img"
                       onError={e => { e.target.src = 'https://via.placeholder.com/200x150/FAECD9/6B4226?text=Combo'; }}

@@ -430,7 +430,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
                 style={{ '--i': idx }}
               >
                 <img
-                  src={`/Food/${item.Image_Name?.trim() || 'fresh-homemade-pita-alon-shaya'}.jpg`}
+                  src={`${API_BASE_URL}/Food/${item.Image_Name?.trim() || 'fresh-homemade-pita-alon-shaya'}.jpg`}
                   alt={item.Title}
                   className={`home-offer-img ${
                     isExiting ? 'exit-animation' :
@@ -458,7 +458,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
             onClick={() => handleCardClick(item._id)}
           >
             <img
-              src={`/Food/${item.Image_Name ? item.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
+              src={`${API_BASE_URL}/Food/${item.Image_Name ? item.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
               alt={item.Title || item.name}
               className="home-card-img"
               onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}
@@ -513,7 +513,7 @@ export default function Home({ items, user, onCartUpdate, onItemsUpdate }) {
                           }}
                         >
                           <img
-                            src={`/Food/${overlayItem.Image_Name ? overlayItem.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
+                            src={`${API_BASE_URL}/Food/${overlayItem.Image_Name ? overlayItem.Image_Name.trim() + '.jpg' : 'fresh-homemade-pita-alon-shaya.jpg'}`}
                             alt={overlayItem.Title}
                             className="item-overlay-img"
                             onError={e => { e.target.src = 'https://via.placeholder.com/400x300/FAECD9/6B4226?text=Food+Image'; }}

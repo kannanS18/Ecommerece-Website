@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Cssfiles/ReviewModal.css';
+import { API_BASE_URL } from '../../config';
 
 const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false }) => {
   const [reviews, setReviews] = useState([]);
@@ -28,7 +29,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/reviews/${item._id}`);
+      const res = await axios.get(`${API_BASE_URL}/api/reviews/${item._id}`);
       setReviews(res.data);
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
@@ -37,7 +38,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
 
   const fetchUserReview = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/reviews/${item._id}/${user.registerEmail || user.email}`);
+      const res = await axios.get(`${API_BASE_URL}/api/reviews/${item._id}/${user.registerEmail || user.email}`);
       if (res.data) {
         setUserReview(res.data);
         setRating(res.data.rating);
@@ -56,7 +57,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/reviews', {
+      await axios.post(`${API_BASE_URL}/api/reviews`, {
         itemId: item._id,
         userEmail: user.registerEmail || user.email,
         userName: user.registerName || user.name,
@@ -81,7 +82,7 @@ const ReviewModal = ({ item, user, onClose, onReviewUpdate, canReview = false })
     
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/reviews/${item._id}/${user.registerEmail || user.email}`);
+      await axios.delete(`${API_BASE_URL}/api/reviews/${item._id}/${user.registerEmail || user.email}`);
       setUserReview(null);
       setRating(0);
       setComment('');

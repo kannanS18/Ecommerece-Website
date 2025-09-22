@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { mat4, quat, vec2, vec3 } from 'gl-matrix';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
 import '../Cssfiles/infinite.css';
 
