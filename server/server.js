@@ -626,38 +626,37 @@ app.post('/api/admin/update-ratings', async (req, res) => {
 
 app.get('/api/admin/fix-review-ids', async (req, res) => {
   try {
+    // Check all collections
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    let debugInfo = 'Collections in database:\n';
+    collections.forEach(col => {
+      debugInfo += `- ${col.name}\n`;
+    });
+    
+    // Try to find reviews in different collections
+    const reviewsCollection = mongoose.connection.db.collection('Reviews');
+    const reviewsFromReviews = await reviewsCollection.find({}).toArray();
+    
+    const reviewsCollectionLower = mongoose.connection.db.collection('reviews');
+    const reviewsFromLower = await reviewsCollectionLower.find({}).toArray();
+    
+    debugInfo += `\nReviews from 'Reviews' collection: ${reviewsFromReviews.length}\n`;
+    debugInfo += `Reviews from 'reviews' collection: ${reviewsFromLower.length}\n`;
+    
+    // Show actual reviews
+    const allReviews = [...reviewsFromReviews, ...reviewsFromLower];
+    debugInfo += '\nActual reviews found:\n';
+    allReviews.forEach(review => {
+      debugInfo += `- ${review.userName}: itemId=${review.itemId}, rating=${review.rating}\n`;
+    });
+    
     const items = await Item.find();
-    const reviews = await Review.find();
-    
-    let debugInfo = `Found ${items.length} items and ${reviews.length} reviews\n\n`;
-    
-    // Get items with ratings
     const itemsWithRatings = items.filter(item => item.reviewCount > 0);
-    debugInfo += 'Items with ratings:\n';
+    debugInfo += '\nItems with ratings:\n';
     itemsWithRatings.forEach(item => {
       debugInfo += `- "${item.Title}" (_id: ${item._id}): ${item.reviewCount} reviews\n`;
     });
     
-    debugInfo += '\nCurrent reviews:\n';
-    reviews.forEach(review => {
-      debugInfo += `- ${review.userName}: itemId=${review.itemId}, rating=${review.rating}\n`;
-    });
-    
-    // Force update all reviews to match the first item with ratings
-    let updated = 0;
-    if (itemsWithRatings.length > 0 && reviews.length > 0) {
-      const targetItem = itemsWithRatings[0]; // Use first item with ratings
-      
-      for (const review of reviews) {
-        if (review.itemId.toString() !== targetItem._id.toString()) {
-          await Review.findByIdAndUpdate(review._id, { itemId: targetItem._id });
-          debugInfo += `\nUpdated review by ${review.userName} to itemId: ${targetItem._id} (${targetItem.Title})`;
-          updated++;
-        }
-      }
-    }
-    
-    debugInfo += `\n\nFixed ${updated} review itemIds`;
     res.send(debugInfo.replace(/\n/g, '<br>'));
   } catch (error) {
     console.error('❌ Error fixing review IDs:', error);
