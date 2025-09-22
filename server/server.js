@@ -624,6 +624,37 @@ app.post('/api/admin/update-ratings', async (req, res) => {
   }
 });
 
+app.post('/api/admin/fix-review-ids', async (req, res) => {
+  try {
+    const items = await Item.find();
+    const reviews = await Review.find();
+    
+    console.log(`Found ${items.length} items and ${reviews.length} reviews`);
+    
+    // Get items with ratings
+    const itemsWithRatings = items.filter(item => item.reviewCount > 0);
+    console.log('Items with ratings:', itemsWithRatings.map(i => `${i.Title} (${i._id})`));
+    
+    // Update reviews to match items
+    let updated = 0;
+    for (let i = 0; i < Math.min(itemsWithRatings.length, reviews.length); i++) {
+      const item = itemsWithRatings[i];
+      const review = reviews[i];
+      
+      if (review.itemId.toString() !== item._id.toString()) {
+        await Review.findByIdAndUpdate(review._id, { itemId: item._id });
+        console.log(`Updated review by ${review.userName} to itemId: ${item._id} (${item.Title})`);
+        updated++;
+      }
+    }
+    
+    res.send(`Fixed ${updated} review itemIds`);
+  } catch (error) {
+    console.error('❌ Error fixing review IDs:', error);
+    res.status(500).send("Failed to fix review IDs.");
+  }
+});
+
 // Helper function to update item rating
 async function updateItemRating(itemId) {
   const reviews = await Review.find({ itemId });
