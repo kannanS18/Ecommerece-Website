@@ -682,11 +682,17 @@ app.post('/api/reviews', async (req, res) => {
 // Get reviews for an item
 app.get('/api/reviews/:itemId', async (req, res) => {
   try {
+    console.log('🔍 Fetching reviews for itemId:', req.params.itemId);
     const reviews = await Review.find({ itemId: req.params.itemId })
       .sort({ createdAt: -1 })
       .limit(50);
+    console.log('🔍 Found reviews:', reviews.length);
+    if (reviews.length > 0) {
+      console.log('🔍 Sample review:', { itemId: reviews[0].itemId, userName: reviews[0].userName });
+    }
     res.json(reviews);
   } catch (error) {
+    console.error('❌ Review fetch error:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
   }
 });
