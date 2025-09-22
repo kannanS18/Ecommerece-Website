@@ -238,9 +238,12 @@ app.put('/api/user/:email', (req, res, next) => {
 
 app.get('/api/items', async (req, res) => {
   try {
+    console.log('🔍 Database name:', mongoose.connection.db.databaseName);
     const items = await Item.find();
+    console.log('🔍 Items found:', items.length);
     res.json(items);
   } catch (err) {
+    console.error('❌ Items error:', err);
     res.status(500).json({ error: 'Failed to fetch items' });
   }
 });
