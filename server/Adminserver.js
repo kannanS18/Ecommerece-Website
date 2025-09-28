@@ -14,12 +14,13 @@ app.use(cors());
 app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
 // Connect to the same DB as main server
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm');
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm')
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Debug middleware to log requests
-app.use('/api/admin', (req, res, next) => {
-  console.log(`Admin API call: ${req.method} ${req.path}`);
-  console.log('Headers:', req.headers.authorization ? 'Token present' : 'No token');
+// Add request logging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
   next();
 });
 
