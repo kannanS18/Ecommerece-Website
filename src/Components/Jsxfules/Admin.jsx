@@ -89,11 +89,11 @@ export default function Admin({ items, setItems }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
-      // Immediately add the new item to the current items list
-      const newItem = response.data;
-      setItems(prevItems => [...prevItems, newItem]);
+      // Show success message and clear form immediately
+      setAddSuccess('✅ Item added successfully!');
+      alert('Item added successfully!');
       
-      setAddSuccess('Item added successfully!');
+      // Clear form
       setAddForm({
         Title: '',
         Ingredients: '',
@@ -105,16 +105,22 @@ export default function Admin({ items, setItems }) {
       });
       setAddImageFile(null);
       
+      // Refresh items list
+      await fetchItems();
+      
       // Reset category filter to 'all' to show the new item
       setCategoryFilter('all');
       
+      // Close modal after short delay
       setTimeout(() => {
         setShowAdd(false);
         setAddSuccess('');
-      }, 1500);
+      }, 1000);
     } catch (err) {
       console.error('Failed to add item:', err);
-      setAddError(err.response?.data?.error || 'Failed to add item. Please try again.');
+      const errorMsg = err.response?.data?.error || 'Failed to add item. Please try again.';
+      setAddError(errorMsg);
+      alert('Error: ' + errorMsg);
     }
   };
 
@@ -236,6 +242,7 @@ export default function Admin({ items, setItems }) {
               accept="image/*" 
               onChange={e => setAddImageFile(e.target.files[0])}
               style={{marginBottom: '10px'}}
+              key={addSuccess ? 'reset' : 'file-input'}
             />
             <input name="Title" value={addForm.Title} onChange={handleAddChange} placeholder="Title" required />
             <input name="category" value={addForm.category} onChange={handleAddChange} placeholder="Category" required />
