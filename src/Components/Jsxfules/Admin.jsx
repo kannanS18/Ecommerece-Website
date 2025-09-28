@@ -80,20 +80,18 @@ export default function Admin({ items, setItems }) {
     setAddError('');
     setAddSuccess('');
     
-    const formData = new FormData();
-    Object.entries(addForm).forEach(([key, value]) => formData.append(key, value));
-    if (addImageFile) formData.append('image', addImageFile);
-
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/items`, formData, {
+      const formData = new FormData();
+      Object.entries(addForm).forEach(([key, value]) => formData.append(key, value));
+      if (addImageFile) formData.append('image', addImageFile);
+
+      await axios.post(`${API_BASE_URL}/api/items`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
-      // Show success message and clear form immediately
-      setAddSuccess('✅ Item added successfully!');
-      alert('Item added successfully!');
+      alert('✅ Item added successfully!');
       
-      // Clear form
+      // Clear form immediately
       setAddForm({
         Title: '',
         Ingredients: '',
@@ -105,22 +103,15 @@ export default function Admin({ items, setItems }) {
       });
       setAddImageFile(null);
       
-      // Refresh items list
-      await fetchItems();
+      // Close modal
+      setShowAdd(false);
       
-      // Reset category filter to 'all' to show the new item
-      setCategoryFilter('all');
+      // Refresh items from server
+      fetchItems();
       
-      // Close modal after short delay
-      setTimeout(() => {
-        setShowAdd(false);
-        setAddSuccess('');
-      }, 1000);
     } catch (err) {
       console.error('Failed to add item:', err);
-      const errorMsg = err.response?.data?.error || 'Failed to add item. Please try again.';
-      setAddError(errorMsg);
-      alert('Error: ' + errorMsg);
+      alert('❌ Failed to add item: ' + (err.response?.data?.message || err.message));
     }
   };
 
@@ -242,7 +233,6 @@ export default function Admin({ items, setItems }) {
               accept="image/*" 
               onChange={e => setAddImageFile(e.target.files[0])}
               style={{marginBottom: '10px'}}
-              key={addSuccess ? 'reset' : 'file-input'}
             />
             <input name="Title" value={addForm.Title} onChange={handleAddChange} placeholder="Title" required />
             <input name="category" value={addForm.category} onChange={handleAddChange} placeholder="Category" required />
