@@ -9,6 +9,8 @@ export default function Admin({ items, setItems }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
   const [showAdd, setShowAdd] = useState(false);
+  const [addError, setAddError] = useState('');
+  const [addSuccess, setAddSuccess] = useState('');
   const [addForm, setAddForm] = useState({
     Title: '',
     Ingredients: '',
@@ -73,6 +75,9 @@ export default function Admin({ items, setItems }) {
 
   const addItem = async (e) => {
     e.preventDefault();
+    setAddError('');
+    setAddSuccess('');
+    
     const formData = new FormData();
     Object.entries(addForm).forEach(([key, value]) => formData.append(key, value));
     if (addImageFile) formData.append('image', addImageFile);
@@ -81,7 +86,7 @@ export default function Admin({ items, setItems }) {
       await axios.post(`${API_BASE_URL}/api/items`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      setShowAdd(false);
+      setAddSuccess('Item added successfully!');
       setAddForm({
         Title: '',
         Ingredients: '',
@@ -93,8 +98,13 @@ export default function Admin({ items, setItems }) {
       });
       setAddImageFile(null);
       fetchItems();
+      setTimeout(() => {
+        setShowAdd(false);
+        setAddSuccess('');
+      }, 2000);
     } catch (err) {
       console.error('Failed to add item:', err);
+      setAddError(err.response?.data?.error || 'Failed to add item. Please try again.');
     }
   };
 
@@ -209,6 +219,8 @@ export default function Admin({ items, setItems }) {
             onSubmit={addItem}
           >
             <h2>Add New Item</h2>
+            {addError && <div style={{color: 'red', margin: '10px 0'}}>{addError}</div>}
+            {addSuccess && <div style={{color: 'green', margin: '10px 0'}}>{addSuccess}</div>}
             <input type="file" accept="image/*" onChange={e => setAddImageFile(e.target.files[0])} />
             <input name="Title" value={addForm.Title} onChange={handleAddChange} placeholder="Title" required />
             <input name="category" value={addForm.category} onChange={handleAddChange} placeholder="Category" required />

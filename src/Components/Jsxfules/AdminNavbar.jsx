@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import '../Cssfiles/AdminNavbar.css';
 import axios from 'axios';
 import logo from '../../Images/Logo.png';
+import { ADMIN_API_URL } from '../../config';
 
 export default function AdminNavbar({ admin, onLogout }) {
   const location = useLocation();
@@ -17,7 +18,7 @@ export default function AdminNavbar({ admin, onLogout }) {
     setError('');
     setSuccess('');
     try {
-      await axios.post(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-website-2.onrender.com'}/api/admin/add`, {
+      await axios.post(`${ADMIN_API_URL}/api/admin/add`, {
         username: newAdmin.username,
         password: newAdmin.password,
         profile: {
