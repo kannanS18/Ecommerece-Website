@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const adminRoutes = require('./Route/AdminRoutes');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const app = express();
 app.use(express.json());
