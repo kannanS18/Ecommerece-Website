@@ -6,6 +6,7 @@ import Admin from '../Components/Jsxfules/Admin';
 import Users from '../Components/Jsxfules/User';
 import AdminOrders from '../Components/Jsxfules/Adminorder';
 import { secureStorage } from '../utils/storage';
+import { API_BASE_URL, ADMIN_API_URL } from '../config';
 
 // Helper to decode JWT (without verifying signature)
 function parseJwt(token) {
@@ -29,7 +30,7 @@ export default function AdminLayout() {
       const decoded = parseJwt(token);
       if (decoded && decoded.username) {
         axios
-          .get(`http://localhost:5001/api/admin/profile/${decoded.username}`, {
+          .get(`${ADMIN_API_URL}/api/admin/profile/${decoded.username}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((profileRes) => {
@@ -56,7 +57,7 @@ export default function AdminLayout() {
   useEffect(() => {
     if (admin && token) {
       axios
-        .get('http://localhost:5000/api/items', {
+        .get(`${API_BASE_URL}/api/items`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setItems(res.data))
@@ -67,7 +68,7 @@ export default function AdminLayout() {
   // Handle logout
   const handleLogout = async () => {
     if (admin) {
-      await axios.post('http://localhost:5001/api/admin/logout', {
+      await axios.post(`${ADMIN_API_URL}/api/admin/logout`, {
         username: admin.username,
       });
     }

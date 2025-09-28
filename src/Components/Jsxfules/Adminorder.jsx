@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import '../Cssfiles/AdminOrders.css';
+import { ADMIN_API_URL } from '../../config';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -10,7 +11,7 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
-      const res = await axios.get('http://localhost:5001/api/admin/orders', {
+      const res = await axios.get(`${ADMIN_API_URL}/api/admin/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +53,7 @@ const updateStatus = async (orderId) => {
   try {
     const token = sessionStorage.getItem('adminToken');
     await axios.put(
-      `http://localhost:5001/api/admin/order/${orderId}/status`,
+      `${ADMIN_API_URL}/api/admin/order/${orderId}/status`,
       { status: 'out for delivery' },
       {
         headers: {

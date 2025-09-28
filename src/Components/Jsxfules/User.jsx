@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../Cssfiles/user.css';
 import axios from 'axios';
+import { ADMIN_API_URL } from '../../config';
 
 export default function AdminUsers({ admin }) {
   const [admins, setAdmins] = useState([]);
@@ -22,7 +23,7 @@ export default function AdminUsers({ admin }) {
   const fetchAdmins = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
-      const res = await axios.get('http://localhost:5001/api/admin/all', {
+      const res = await axios.get(`${ADMIN_API_URL}/api/admin/all`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const visibleAdmins = admin.isSuperAdmin
@@ -55,7 +56,7 @@ export default function AdminUsers({ admin }) {
 
   const saveEdit = async () => {
     const token = sessionStorage.getItem('adminToken');
-    await axios.put(`http://localhost:5001/api/admin/${editId}`, editForm, {
+    await axios.put(`${ADMIN_API_URL}/api/admin/${editId}`, editForm, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setEditId(null);
@@ -65,7 +66,7 @@ export default function AdminUsers({ admin }) {
   const deleteAdmin = async (id) => {
     if (window.confirm('Are you sure?')) {
       const token = sessionStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5001/api/admin/${id}`, {
+      await axios.delete(`${ADMIN_API_URL}/api/admin/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAdmins(admins.filter(a => a._id !== id));

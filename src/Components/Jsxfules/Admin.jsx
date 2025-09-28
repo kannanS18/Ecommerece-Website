@@ -28,7 +28,7 @@ export default function Admin({ items, setItems }) {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('${API_BASE_URL}/api/items');
+      const res = await axios.get(`${API_BASE_URL}/api/items`);
       setItems(res.data);
     } catch (err) {
       console.error('Failed to fetch items:', err);
@@ -78,7 +78,7 @@ export default function Admin({ items, setItems }) {
     if (addImageFile) formData.append('image', addImageFile);
 
     try {
-      await axios.post('${API_BASE_URL}/api/items', formData, {
+      await axios.post(`${API_BASE_URL}/api/items`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setShowAdd(false);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "../Cssfiles/Success.css";
+import { API_BASE_URL } from '../../config';
 
 export default function Success() {
   const [params] = useSearchParams();
@@ -10,7 +11,7 @@ export default function Success() {
 
   useEffect(() => {
     if (orderId) {
-      axios.put(`http://localhost:5000/api/order/${orderId}/finalise`, {
+      axios.put(`${API_BASE_URL}/api/order/${orderId}/finalise`, {
         status: "ordered",
       });
     }

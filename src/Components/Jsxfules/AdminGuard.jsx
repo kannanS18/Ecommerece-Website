@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { secureStorage } from '../../utils/storage';
+import { ADMIN_API_URL } from '../../config';
 
 function parseJwt(token) {
   try {
@@ -48,7 +49,7 @@ export default function AdminGuard({ children }) {
       
       // Server-side validation
       try {
-        await axios.get(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-website-2.onrender.com'}/api/admin/profile/${decoded.username}`, {
+        await axios.get(`${ADMIN_API_URL}/api/admin/profile/${decoded.username}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         

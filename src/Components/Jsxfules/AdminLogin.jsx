@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { secureStorage } from '../../utils/storage';
-import { API_BASE_URL } from '../../config';
+import { ADMIN_API_URL } from '../../config';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-admin-server.onrender.com'}/api/admin/login`, {
+      const res = await axios.post(`${ADMIN_API_URL}/api/admin/login`, {
         username,
         password,
       });
@@ -29,7 +29,7 @@ export default function AdminLogin() {
 
       // Optional: Fetch profile (used for admin state check)
       const profileRes = await axios.get(
-        `${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-admin-server.onrender.com'}/api/admin/profile/${username}`,
+        `${ADMIN_API_URL}/api/admin/profile/${username}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

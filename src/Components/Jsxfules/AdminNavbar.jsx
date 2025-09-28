@@ -17,7 +17,7 @@ export default function AdminNavbar({ admin, onLogout }) {
     setError('');
     setSuccess('');
     try {
-      await axios.post('http://localhost:5001/api/admin/add', {
+      await axios.post(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-website-2.onrender.com'}/api/admin/add`, {
         username: newAdmin.username,
         password: newAdmin.password,
         profile: {

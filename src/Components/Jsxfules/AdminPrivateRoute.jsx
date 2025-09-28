@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { ADMIN_API_URL } from '../../config';
 
 export default function AdminPrivateRoute({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(null); // null = loading
@@ -15,7 +16,7 @@ export default function AdminPrivateRoute({ children }) {
       }
 
       try {
-        const res = await axios.get('http://localhost:5001/api/admin/verify-token', {
+        const res = await axios.get(`${ADMIN_API_URL}/api/admin/verify-token`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
