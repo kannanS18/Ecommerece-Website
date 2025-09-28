@@ -24,6 +24,17 @@ app.post('/api/admin/test-login', (req, res) => {
   res.json({ message: 'Test login endpoint working', body: req.body });
 });
 
+// Debug actual admin login
+app.post('/api/admin/login', (req, res) => {
+  console.log('Real admin login attempt:', req.body);
+  console.log('MongoDB connected:', mongoose.connection.readyState === 1);
+  res.json({ 
+    message: 'Debug: Admin login endpoint reached', 
+    body: req.body,
+    mongoConnected: mongoose.connection.readyState === 1
+  });
+});
+
 
 
 // Connect to MongoDB after health checks
