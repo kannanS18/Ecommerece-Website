@@ -18,20 +18,6 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
-// Health check for Render (exact path Render is checking)
-app.get('/api/admin/verify-token', (req, res, next) => {
-  // If no auth header, treat as health check
-  if (!req.headers.authorization) {
-    return res.status(200).json({ status: 'OK', message: 'Health check' });
-  }
-  // If auth header exists, pass to real admin routes
-  next();
-});
-
-
-
-
-
 // Connect to MongoDB after health checks
 if (process.env.MONGO_URI) {
   mongoose.connect(process.env.MONGO_URI)
@@ -39,13 +25,18 @@ if (process.env.MONGO_URI) {
     .catch(err => console.log('MongoDB connection error:', err));
 }
 
-// Load admin routes
+// Load admin routes FIRST
 try {
   const adminRoutes = require('./Route/AdminRoutes');
   app.use(adminRoutes);
 } catch (err) {
   console.log('Admin routes loading error:', err.message);
 }
+
+// Fallback health check for Render (only if admin routes don't handle it)
+app.get('/api/admin/verify-token', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Health check fallback' });
+});
 
 // Static files
 const path = require('path');
