@@ -220,7 +220,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
 
       const updatedTotal = order.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-      await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+      await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
         ...order,
         total: updatedTotal,
       });
@@ -444,7 +444,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                       value={order.registerName} 
                       onChange={async e => {
                         const newName = e.target.value;
-                        await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                        await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                           ...order,
                           registerName: newName
                         });
@@ -461,7 +461,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                       value={order.phone}
                       onChange={async e => {
                         const newPhone = e.target.value;
-                        await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                        await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                           ...order,
                           phone: newPhone
                         });
@@ -478,7 +478,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                       value={order.address}
                       onChange={async e => {
                         const newAddress = e.target.value;
-                        await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                        await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                           ...order,
                           address: newAddress
                         });
@@ -502,7 +502,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                           delete updatedOrder.dineInDate;
                           delete updatedOrder.dineInTime;
                         }
-                        await axios.put(`http://localhost:5000/api/order/${order._id}`, updatedOrder);
+                        await axios.put(`${API_BASE_URL}/api/order/${order._id}`, updatedOrder);
                         fetchOrders();
                       }}
                       className="form-select"
@@ -521,7 +521,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                           min={new Date().toISOString().split("T")[0]}
                           value={order.dineInDate || ''}
                           onChange={async e => {
-                            await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                            await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                               ...order,
                               dineInDate: e.target.value
                             });
@@ -536,7 +536,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                           <select
                             value={order.dineInTime || ''}
                             onChange={async e => {
-                              await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                              await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                                 ...order,
                                 dineInTime: e.target.value
                               });
@@ -580,7 +580,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                     placeholder={placeholderTexts[placeholderIndex]}
                     onChange={async (e) => {
                       const newMsg = e.target.value;
-                      await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                      await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                         ...order,
                         msg: newMsg
                       });
@@ -610,10 +610,10 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                             onClick={async () => {
                               const updatedItems = order.items.filter((_, i) => i !== idx);
                               if (updatedItems.length === 0) {
-                                await axios.delete(`http://localhost:5000/api/order/${order._id}`);
+                                await axios.delete(`${API_BASE_URL}/api/order/${order._id}`);
                               } else {
                                 const updatedTotal = updatedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
-                                await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                                await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                                   ...order,
                                   items: updatedItems,
                                   total: updatedTotal,
@@ -630,25 +630,41 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                       </div>
                       <div className="item-horizontal-controls">
                         <div className="qty-control">
-                          <span>Qty:</span>
-                          <input
-                            type="number"
-                            min="1"
-                            value={item.quantity}
-                            onChange={async (e) => {
+                          <button
+                            className="qty-btn"
+                            onClick={async () => {
+                              if (item.quantity > 1) {
+                                const updatedItems = [...order.items];
+                                updatedItems[idx].quantity = item.quantity - 1;
+                                await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
+                                  ...order,
+                                  items: updatedItems,
+                                });
+                                fetchOrders();
+                                onCartUpdate?.();
+                              }
+                            }}
+                            disabled={order.isFinalised || item.quantity <= 1}
+                          >
+                            -
+                          </button>
+                          <span className="qty-display">{item.quantity}</span>
+                          <button
+                            className="qty-btn"
+                            onClick={async () => {
                               const updatedItems = [...order.items];
-                              updatedItems[idx].quantity = Math.max(1, parseInt(e.target.value) || 1);
-                              const res = await axios.put(`http://localhost:5000/api/order/${order._id}`, {
+                              updatedItems[idx].quantity = item.quantity + 1;
+                              await axios.put(`${API_BASE_URL}/api/order/${order._id}`, {
                                 ...order,
                                 items: updatedItems,
                               });
-                              setOrders(orders => orders.map(o => o._id === order._id ? res.data : o));
                               fetchOrders();
                               onCartUpdate?.();
                             }}
-                            className="qty-input"
                             disabled={order.isFinalised}
-                          />
+                          >
+                            +
+                          </button>
                         </div>
                         <div className="price-display">
                           <span className="unit-price">{currencySymbols[currency]}{convertPrice(item.price).toFixed(2)} each</span>
@@ -807,7 +823,7 @@ export default function Cart({ user, onBack, onLoginRequest, onProfileEdit, onCa
                   className="reorder-btn order-btn"
                   onClick={async () => {
                     try {
-                      await axios.post(`http://localhost:5000/api/order/${order._id}/reorder`);
+                      await axios.post(`${API_BASE_URL}/api/order/${order._id}/reorder`);
                       fetchOrders();
                       onCartUpdate?.(); // <-- Update badge after reorder
                       alert('Order re-added to cart');
