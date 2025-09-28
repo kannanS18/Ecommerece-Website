@@ -48,7 +48,7 @@ export default function AdminGuard({ children }) {
       
       // Server-side validation
       try {
-        await axios.get(`http://localhost:5001/api/admin/profile/${decoded.username}`, {
+        await axios.get(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-website-2.onrender.com'}/api/admin/profile/${decoded.username}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         
