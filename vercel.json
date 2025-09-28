@@ -18,5 +18,9 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "github": {
+    "autoAlias": false,
+    "autoJobCancelation": false
+  }
 }

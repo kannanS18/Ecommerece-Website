@@ -85,13 +85,21 @@ export default function Admin({ items, setItems }) {
       Object.entries(addForm).forEach(([key, value]) => formData.append(key, value));
       if (addImageFile) formData.append('image', addImageFile);
 
-      await axios.post(`${API_BASE_URL}/api/items`, formData, {
+      const response = await axios.post(`${API_BASE_URL}/api/items`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
+      // Get the new item from response
+      const newItem = response.data;
+      
+      // Immediately add to items list for instant UI update
+      setItems(prevItems => [...prevItems, newItem]);
+      
+      // Show success
+      setAddSuccess('✅ Item added successfully!');
       alert('✅ Item added successfully!');
       
-      // Clear form immediately
+      // Clear form
       setAddForm({
         Title: '',
         Ingredients: '',
@@ -103,15 +111,21 @@ export default function Admin({ items, setItems }) {
       });
       setAddImageFile(null);
       
-      // Close modal
-      setShowAdd(false);
+      // Reset file input
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) fileInput.value = '';
       
-      // Refresh items from server
-      fetchItems();
+      // Close modal after delay
+      setTimeout(() => {
+        setShowAdd(false);
+        setAddSuccess('');
+      }, 1500);
       
     } catch (err) {
       console.error('Failed to add item:', err);
-      alert('❌ Failed to add item: ' + (err.response?.data?.message || err.message));
+      const errorMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      setAddError('❌ ' + errorMsg);
+      alert('❌ Failed to add item: ' + errorMsg);
     }
   };
 

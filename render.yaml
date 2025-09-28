@@ -7,3 +7,8 @@ services:
     startCommand: npm start
     autoDeploy: true
     branch: main
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
