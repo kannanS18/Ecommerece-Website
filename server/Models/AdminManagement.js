@@ -12,4 +12,4 @@ const AdminSchema = new mongoose.Schema({
   lastLogin: { type: String },  
   lastLogout: { type: String } 
 });
-module.exports = mongoose.model('AdminManagement', AdminSchema);
+module.exports = mongoose.model('AdminManagement', AdminSchema, 'adminmanagements');
