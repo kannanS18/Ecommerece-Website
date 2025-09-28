@@ -141,9 +141,9 @@ export default function Admin({ items, setItems }) {
               {categoryItems.map(item => (
                 <div key={item._id} className="admin-card">
                   <img
-                    src={`/Food/${item.Image_Name ? item.Image_Name.trim() + '.jpg' : 'placeholder.jpg'}`}
+                    src={`${API_BASE_URL}/Food/${item.Image_Name ? item.Image_Name.trim() + '.jpg' : 'placeholder.jpg'}`}
                     alt={item.Title}
-                    onError={e => { e.target.src = '/images/placeholder.jpg'; }}
+                    onError={e => { e.target.src = `${API_BASE_URL}/images/placeholder.jpg`; }}
                   />
 
                   {editingId === item._id ? (
