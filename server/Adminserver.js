@@ -18,6 +18,11 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
+// Health check for Render (only responds to GET without auth)
+app.get('/api/admin/health-check', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Health check' });
+});
+
 
 
 
@@ -29,25 +34,12 @@ if (process.env.MONGO_URI) {
     .catch(err => console.log('MongoDB connection error:', err));
 }
 
-// Load admin routes with health check override
+// Load admin routes
 try {
   const adminRoutes = require('./Route/AdminRoutes');
-  
-  // Override verify-token for health check if no auth header
-  app.get('/api/admin/verify-token', (req, res, next) => {
-    if (!req.headers.authorization) {
-      return res.status(200).json({ status: 'OK', message: 'Health check' });
-    }
-    next();
-  });
-  
   app.use(adminRoutes);
 } catch (err) {
   console.log('Admin routes loading error:', err.message);
-  // Fallback health check if routes fail
-  app.get('/api/admin/verify-token', (req, res) => {
-    res.status(200).json({ status: 'OK', message: 'Health check fallback' });
-  });
 }
 
 // Static files
