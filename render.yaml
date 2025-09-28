@@ -5,3 +5,5 @@ services:
     rootDir: server
     buildCommand: npm install
     startCommand: npm start
+    autoDeploy: true
+    branch: main
