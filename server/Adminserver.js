@@ -21,15 +21,12 @@ app.get('/health', (req, res) => {
 });
 
 // Connect to the same DB as main server
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm');
 
 // Only use admin routes here
 app.use(adminRoutes);
 
-const PORT = process.env.ADMIN_PORT || 5001;
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Admin server running on port ${PORT}`);
 });
