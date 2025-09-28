@@ -18,10 +18,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
-// Render health check endpoint
-app.get('/api/admin/verify-token', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Health check endpoint' });
-});
+
 
 // Connect to MongoDB after health checks
 if (process.env.MONGO_URI) {
