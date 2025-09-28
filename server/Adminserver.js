@@ -18,6 +18,12 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
+// Debug route to test admin login
+app.post('/api/admin/test-login', (req, res) => {
+  console.log('Test login attempt:', req.body);
+  res.json({ message: 'Test login endpoint working', body: req.body });
+});
+
 
 
 // Connect to MongoDB after health checks
