@@ -57,9 +57,7 @@ export default function AdminLayout() {
   useEffect(() => {
     if (admin && token) {
       axios
-        .get(`${API_BASE_URL}/api/items`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(`${API_BASE_URL}/api/items`)
         .then((res) => setItems(res.data))
         .catch((err) => console.log('Failed to fetch items:', err));
     }
