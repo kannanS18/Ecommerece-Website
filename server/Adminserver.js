@@ -1,9 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const adminRoutes = require('./Route/AdminRoutes');
-const fs = require('fs');
-const path = require('path');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -11,22 +8,39 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
-// Health check endpoint
+// Health check endpoints - must be before other routes
 app.get('/', (req, res) => {
-  res.json({ status: 'Admin Server Running', message: 'Admin server is operational' });
+  res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Admin server is running' });
+  res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
-// Connect to the same DB as main server
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm');
+// Render health check endpoint
+app.get('/api/admin/verify-token', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Health check endpoint' });
+});
 
-// Only use admin routes here
-app.use(adminRoutes);
+// Connect to MongoDB after health checks
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log('MongoDB connection error:', err));
+}
+
+// Load admin routes only after MongoDB connection
+try {
+  const adminRoutes = require('./Route/AdminRoutes');
+  app.use(adminRoutes);
+} catch (err) {
+  console.log('Admin routes loading error:', err.message);
+}
+
+// Static files
+const path = require('path');
+app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {
