@@ -11,6 +11,15 @@ app.use(express.json());
 app.use(cors());
 app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ status: 'Admin Server Running', message: 'Admin server is operational' });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Admin server is running' });
+});
+
 // Connect to the same DB as main server
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm', {
     useNewUrlParser: true,
