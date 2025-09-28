@@ -10,7 +10,7 @@ const JWT_SECRET = 'JWT_SECRET=super_secret_key_1234567890';
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-// const adminRoutes = require('./Route/AdminRoutes'); 
+const adminRoutes = require('./Route/AdminRoutes'); 
 const Order = require('./Models/Ordermodel');
 const nodemailer = require('nodemailer');
 const downloadRoute = require('./Route/downlodeRoute'); // Import the download route
@@ -791,7 +791,7 @@ app.delete('/api/reviews/:itemId/:userEmail', async (req, res) => {
 
 
 
-// app.use(adminRoutes);
+app.use(adminRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

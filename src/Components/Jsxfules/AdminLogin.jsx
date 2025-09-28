@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { secureStorage } from '../../utils/storage';
+import { API_BASE_URL } from '../../config';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:5001/api/admin/login', {
+      const res = await axios.post(`${API_BASE_URL}/api/admin/login`, {
         username,
         password,
       });
@@ -28,7 +29,7 @@ export default function AdminLogin() {
 
       // Optional: Fetch profile (used for admin state check)
       const profileRes = await axios.get(
-        `http://localhost:5001/api/admin/profile/${username}`,
+        `${API_BASE_URL}/api/admin/profile/${username}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
