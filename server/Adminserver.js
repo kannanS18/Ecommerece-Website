@@ -18,9 +18,14 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Admin server is running' });
 });
 
-// Health check for Render (only responds to GET without auth)
-app.get('/api/admin/health-check', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Health check' });
+// Health check for Render (exact path Render is checking)
+app.get('/api/admin/verify-token', (req, res, next) => {
+  // If no auth header, treat as health check
+  if (!req.headers.authorization) {
+    return res.status(200).json({ status: 'OK', message: 'Health check' });
+  }
+  // If auth header exists, pass to real admin routes
+  next();
 });
 
 
