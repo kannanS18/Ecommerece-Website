@@ -12,7 +12,7 @@ app.use(cors());
 app.use('/Food', express.static(path.join(__dirname, '../public/Food')));
 
 // Connect to the same DB as main server
-mongoose.connect('mongodb://localhost:27017/ecomm', {
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/ecomm', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/ecomm', {
 // Only use admin routes here
 app.use(adminRoutes);
 
-const PORT = 5001;
+const PORT = process.env.ADMIN_PORT || 5001;
 app.listen(PORT, () => {
     console.log(`Admin server running on port ${PORT}`);
 });

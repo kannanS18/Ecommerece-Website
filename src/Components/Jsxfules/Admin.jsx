@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Cssfiles/Admin.css';
+import { API_BASE_URL } from '../../config';
 
 export default function Admin({ items, setItems }) {
   const [expandedId, setExpandedId] = useState(null);
@@ -27,7 +28,7 @@ export default function Admin({ items, setItems }) {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/items');
+      const res = await axios.get('${API_BASE_URL}/api/items');
       setItems(res.data);
     } catch (err) {
       console.error('Failed to fetch items:', err);
@@ -47,7 +48,7 @@ export default function Admin({ items, setItems }) {
   const saveEdit = async () => {
     try {
       const payload = { ...editForm, price: Number(editForm.price) };
-      await axios.put(`http://localhost:5000/api/items/${editingId}`, payload);
+      await axios.put(`${API_BASE_URL}/api/items/${editingId}`, payload);
       setEditingId(null);
       fetchItems();
     } catch (err) {
@@ -58,7 +59,7 @@ export default function Admin({ items, setItems }) {
   const deleteItem = async (id) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/items/${id}`);
+        await axios.delete(`${API_BASE_URL}/api/items/${id}`);
         fetchItems();
       } catch (err) {
         console.error('Failed to delete item:', err);
@@ -77,7 +78,7 @@ export default function Admin({ items, setItems }) {
     if (addImageFile) formData.append('image', addImageFile);
 
     try {
-      await axios.post('http://localhost:5000/api/items', formData, {
+      await axios.post('${API_BASE_URL}/api/items', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setShowAdd(false);

@@ -14,7 +14,7 @@ export default function AdminLogin() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${API_BASE_URL}/api/admin/login`, {
+      const res = await axios.post(`${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-admin-server.onrender.com'}/api/admin/login`, {
         username,
         password,
       });
@@ -29,7 +29,7 @@ export default function AdminLogin() {
 
       // Optional: Fetch profile (used for admin state check)
       const profileRes = await axios.get(
-        `${API_BASE_URL}/api/admin/profile/${username}`,
+        `${process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-admin-server.onrender.com'}/api/admin/profile/${username}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
