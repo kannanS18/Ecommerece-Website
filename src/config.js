@@ -9,6 +9,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://ecommerece-websit
 const ADMIN_API_URL = process.env.REACT_APP_ADMIN_URL || 'https://ecommerece-website-2.onrender.com';
 
 console.log('Final API_BASE_URL:', API_BASE_URL);
+console.log('Final ADMIN_API_URL:', ADMIN_API_URL);
 
 export { API_BASE_URL, ADMIN_API_URL };
 // Updated for Render backend - v4 with debugging
